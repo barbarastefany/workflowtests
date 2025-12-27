@@ -1,6 +1,7 @@
 name: Call 3. Create PR to Main
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - develop
 
@@ -10,5 +11,8 @@ permissions:
 
 jobs:
   pr-develop-to-main:
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop' }}
     uses: barbarastefany/reusable-workflows/.github/workflows/3-pr-to-main.yml@main
+    with:
+      merged-pr-number: ${{ github.event.pull_request.number }}
     secrets: inherit
