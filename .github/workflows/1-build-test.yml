@@ -1,0 +1,16 @@
+name: Call 1. Build and Test
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+permissions:
+  contents: read
+
+jobs:
+  call-build-and-test:
+    uses: barbarastefany/reusable-workflows/.github/workflows/1-build-test.yml@main
+    with:
+      java-version: '17'
+    secrets: inherit

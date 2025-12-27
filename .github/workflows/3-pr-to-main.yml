@@ -1,0 +1,12 @@
+name: Call 3. Create PR to Main
+on:
+  workflow_dispatch:
+
+permissions:
+    contents: write
+    pull-requests: write
+
+jobs:
+  pr-develop-to-main:
+    uses: barbarastefany/reusable-workflows/.github/workflows/3-pr-to-main.yml@main
+    secrets: inherit

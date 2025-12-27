@@ -1,0 +1,20 @@
+name: Call 2. Create PR to Develop
+
+on:
+  workflow_run:
+    workflows:
+      - 'Call 1. Build and Test'
+    types:
+      - completed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  call-reusable:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    uses: barbarastefany/reusable-workflows/.github/workflows/2-pr-to-develop.yml@main
+    with:
+      feature-branch: ${{ github.event.workflow_run.head_branch }}
+    secrets: inherit
