@@ -1,10 +1,12 @@
 name: Call 3. Create PR to Main
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - develop
 
 permissions:
-    contents: write
-    pull-requests: write
+  contents: write
+  pull-requests: write
 
 jobs:
   pr-develop-to-main:
