@@ -1,4 +1,4 @@
-name: 3. PR develop to main
+name: 2. PR develop to main
 
 on:
   pull_request:
