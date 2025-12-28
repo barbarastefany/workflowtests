@@ -1,5 +1,4 @@
-name: Call 1. Build and Test
-
+name: 1. Build & Test
 on:
   push:
     branches:
@@ -9,7 +8,8 @@ permissions:
   contents: read
 
 jobs:
-  call-build-and-test:
+  call-build-test:
+    name: Build & Test
     uses: barbarastefany/reusable-workflows/.github/workflows/1-build-test.yml@main
     with:
       java-version: '17'

@@ -1,22 +1,18 @@
-name: Call 2. Create PR to Develop
+name: 2. PR feature to develop
 
 on:
   workflow_run:
-    workflows:
-      - 'Call 1. Build and Test'
-    types:
-      - completed
-    branches:
-      - 'feature/**'
+    workflows: [ '1. Build & Test' ]
+    types: [ completed ]
+    branches: [ 'feature/**' ]
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  call-reusable:
-    name: Criar PR para Develop
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  call-pr-to-develop:
+    name: Criando PR de feature para develop
     uses: barbarastefany/reusable-workflows/.github/workflows/2-pr-to-develop.yml@main
     with:
       feature-branch: ${{ github.event.workflow_run.head_branch }}
