@@ -1,9 +1,11 @@
 name: 3. PR develop to main
 
 on:
-  workflow_run:
-    workflows: [ '2. PR feature to develop' ]
-    types: [ completed ]
+  pull_request:
+    branches:
+      - develop
+    types:
+      - closed
 
 permissions:
   contents: write
@@ -12,6 +14,10 @@ permissions:
 jobs:
   call-pr-to-main:
     name: Criando PR de develop para main
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: barbarastefany/reusable-workflows/.github/workflows/3-pr-to-main.yml@main
+    if: ${{ github.event.pull_request.merged == true }}
+    uses: barbarastefany/reusable-workflows/.github/workflows/4-pr-to-main.yml@main
+    with:
+      base-branch: 'develop'
+      target-branch: 'main'
+      merged-pr-number: ${{ github.event.pull_request.number }}
     secrets: inherit
