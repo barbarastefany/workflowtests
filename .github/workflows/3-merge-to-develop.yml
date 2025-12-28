@@ -1,11 +1,9 @@
 name: 3. Merge PR to Develop and Call 4
 
 on:
-  pull_request:
+  push:
     branches:
       - develop
-    types:
-      - closed
 
 permissions:
   contents: write
@@ -13,8 +11,8 @@ permissions:
 
 jobs:
   call-4-pr-to-main:
-    if: ${{ github.event.pull_request.merged == true }}
+    if: contains(github.event.head_commit.message, 'Merge pull request')
     uses: barbarastefany/reusable-workflows/.github/workflows/4-pr-to-main.yml@main
     with:
-      merged-pr-number: ${{ github.event.pull_request.number }}
+      merged-pr-number: ''
     secrets: inherit

@@ -6,6 +6,8 @@ on:
       - 'Call 1. Build and Test'
     types:
       - completed
+    branches:
+      - 'feature/**'
 
 permissions:
   contents: write
@@ -13,6 +15,7 @@ permissions:
 
 jobs:
   call-reusable:
+    name: Criar PR para Develop
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: barbarastefany/reusable-workflows/.github/workflows/2-pr-to-develop.yml@main
     with:
