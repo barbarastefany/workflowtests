@@ -3,7 +3,7 @@ name: Call 3. Merge PR to Develop and 4. Create PR to Main
 on:
   workflow_run:
     workflows:
-      - 'Call 2. Create PR to Develop'
+      - "Call 2. Create PR to Develop"
     types:
       - completed
 
@@ -12,16 +12,37 @@ permissions:
   pull-requests: write
 
 jobs:
-  merge-pr-to-develop:
+  extract-pr-number:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Extract PR number from workflow_run payload
+    runs-on: ubuntu-latest
+    outputs:
+      pr-number: ${{ steps.get.outputs.pr_number }}
+    steps:
+      - name: Get PR number
+        id: get
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          prs = json.loads(os.environ['PRS_JSON'])
+          print(prs[0]['number'] if prs else '')
+          PY
+        env:
+          PRS_JSON: ${{ toJSON(github.event.workflow_run.pull_requests) }}
+
+  merge-pr-to-develop:
+    needs: extract-pr-number
+    if: ${{ needs.extract-pr-number.outputs.pr-number != '' }}
     name: Merge PR to Develop
     uses: barbarastefany/reusable-workflows/.github/workflows/3-merge-to-develop.yml@main
     with:
-      pr-number: ${{ github.event.workflow_run.head_branch }}
+      pr-number: ${{ needs.extract-pr-number.outputs.pr-number }}
     secrets: inherit
 
   pr-develop-to-main:
     needs: merge-pr-to-develop
+    if: ${{ needs.merge-pr-to-develop.result == 'success' }}
     name: Create PR from Develop to Main
     uses: barbarastefany/reusable-workflows/.github/workflows/4-pr-to-main.yml@main
     with:
