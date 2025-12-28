@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows: [ '2. PR feature to develop' ]
     types: [ completed ]
-    branches: [ 'develop' ]
 
 permissions:
   contents: write
@@ -13,5 +12,6 @@ permissions:
 jobs:
   call-pr-to-main:
     name: Criando PR de develop para main
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: barbarastefany/reusable-workflows/.github/workflows/3-pr-to-main.yml@main
     secrets: inherit
