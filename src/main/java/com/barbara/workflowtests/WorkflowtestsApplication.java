@@ -8,6 +8,7 @@ public class WorkflowtestsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WorkflowtestsApplication.class, args);
+		System.out.println("Testando");
 	}
 
 }
